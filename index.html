@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>수도권 분리배출 정보</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>🗑️ 수도권 분리배출 정보 검색</h1>
+    <input id="search" type="text" placeholder="예: 서울특별시 강남구" />
+    <ul id="suggestions"></ul>
+    <button onclick="search()">검색</button>
+    <div id="result" class="card hidden"></div>
+    <div id="map" class="map"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

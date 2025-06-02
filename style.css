@@ -1,0 +1,81 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  background: #f4fbf8;
+  color: #333;
+}
+.container {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+input, select, button {
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
+#suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#suggestions li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+#suggestions li:hover {
+  background: #f1f9f6;
+}
+button {
+  width: 100%;
+  background-color: #a5d8ff;
+  color: #333;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+button:hover {
+  background-color: #74c0fc;
+}
+.card {
+  margin-top: 20px;
+  padding: 20px;
+  background: #e6fcf5;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.hidden {
+  display: none;
+}
+.map {
+  width: 100%;
+  height: 300px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+@media (max-width: 600px) {
+  .container {
+    margin: 10px;
+    padding: 16px;
+  }
+}
