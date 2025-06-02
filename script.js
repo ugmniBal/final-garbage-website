@@ -1,86 +1,43 @@
 let data = [];
-let map;
+let suggestionsEl = document.getElementById('suggestions');
 
-window.onload = async () => {
-  const response = await fetch("data.json");
-  data = await response.json();
+fetch('merged_data.json')
+  .then(res => res.json())
+  .then(json => { data = json });
 
-  const input = document.getElementById("search");
-  input.addEventListener("input", suggest);
-  document.addEventListener("click", () => {
-    document.getElementById("suggestions").innerHTML = "";
+function autocomplete() {
+  const input = document.getElementById("locationInput").value.trim();
+  suggestionsEl.innerHTML = "";
+  if (!input) return;
+  const matched = data.filter(d => {
+    const full = `${d.시도명} ${d.시군구명} ${d.관리구역명}`;
+    return full.includes(input);
   });
-
-  initMap();
-};
-
-function suggest(e) {
-  const input = e.target.value.trim().replace(/\s/g, "");
-  const suggestions = document.getElementById("suggestions");
-  suggestions.innerHTML = "";
-
-  const matches = data.filter(d =>
-    (d.시도명 + d.시군구명).replace(/\s/g, "").includes(input)
-  );
-
-  const unique = [...new Set(matches.map(d => `${d.시도명} ${d.시군구명}`))];
-  unique.slice(0, 10).forEach(loc => {
+  matched.slice(0, 10).forEach(item => {
     const li = document.createElement("li");
-    li.textContent = loc;
+    li.textContent = `${item.시도명} ${item.시군구명} ${item.관리구역명}`;
     li.onclick = () => {
-      document.getElementById("search").value = loc;
-      suggestions.innerHTML = "";
+      document.getElementById("locationInput").value = li.textContent;
+      suggestionsEl.innerHTML = "";
     };
-    suggestions.appendChild(li);
+    suggestionsEl.appendChild(li);
   });
 }
 
-function search() {
-  const val = document.getElementById("search").value.trim().replace(/\s/g, "");
-  const result = document.getElementById("result");
-  const matched = data.filter(d =>
-    (d.시도명 + d.시군구명).replace(/\s/g, "") === val
-  );
-
-  result.innerHTML = "";
-
-  if (matched.length === 0) {
-    result.classList.remove("hidden");
-    result.innerHTML = "해당 지역 정보를 찾을 수 없습니다.";
-    return;
-  }
-
-  matched.forEach(i => {
-    result.classList.remove("hidden");
-    result.innerHTML += `
-      <strong>${i.시도명} ${i.시군구명} - ${i.관리구역명}</strong><br>
-      🧺 생활: ${i.생활쓰레기배출방법} (${i.생활쓰레기배출요일})<br>
-      🍎 음식물: ${i.음식물쓰레기배출방법} (${i.음식물쓰레기배출요일})<br>
-      ♻️ 재활용: ${i.재활용품배출방법} (${i.재활용품배출요일})<br>
-      🚫 미수거일: ${i.미수거일}<br>
-      ☎️ 문의: ${i.관리부서전화번호}<br><br>
-    `;
-
-    moveMap(i.시도명 + " " + i.시군구명);
+function searchInfo() {
+  const input = document.getElementById("locationInput").value.trim();
+  const resultDiv = document.getElementById("result");
+  const match = data.find(d => {
+    const full = `${d.시도명} ${d.시군구명} ${d.관리구역명}`;
+    return full === input;
   });
-}
-
-function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 37.5665, lng: 126.9780 },
-    zoom: 11
-  });
-}
-
-function moveMap(location) {
-  const geocoder = new google.maps.Geocoder();
-  geocoder.geocode({ address: location }, (results, status) => {
-    if (status === "OK") {
-      map.setCenter(results[0].geometry.location);
-      new google.maps.Marker({
-        map: map,
-        position: results[0].geometry.location
-      });
-    }
-  });
+  resultDiv.innerHTML = match ? `
+    <strong>📍 ${match.시도명} ${match.시군구명} ${match.관리구역명}</strong><br><br>
+    🏠 배출장소: ${match.배출장소}<br>
+    🗑️ 생활쓰레기: ${match.생활쓰레기배출방법} (${match.생활쓰레기배출요일})<br>
+    🍱 음식물쓰레기: ${match.음식물쓰레기배출방법} (${match.음식물쓰레기배출요일})<br>
+    ♻️ 재활용품: ${match.재활용품배출방법} (${match.재활용품배출요일})<br>
+    🚫 미수거일: ${match.미수거일}<br>
+    ☎️ 문의: ${match.관리부서전화번호}<br>
+  ` : "❗ 일치하는 지역 정보를 찾을 수 없습니다.";
 }

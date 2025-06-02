@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>수도권 분리배출 정보</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>분리수거 정보 검색</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>🗑️ 수도권 분리배출 정보 검색</h1>
-    <input id="search" type="text" placeholder="예: 서울특별시 강남구" />
+  <h1>전국 쓰레기 배출 정보 검색</h1>
+  <div class="search">
+    <input type="text" id="locationInput" placeholder="예: 서울특별시 강남구 대치1동" oninput="autocomplete()">
     <ul id="suggestions"></ul>
-    <button onclick="search()">검색</button>
-    <div id="result" class="card hidden"></div>
-    <div id="map" class="map"></div>
+    <button onclick="searchInfo()">배출 정보 보기</button>
   </div>
+  <div class="result" id="result">지역을 입력해주세요.</div>
   <script src="script.js"></script>
 </body>
 </html>
